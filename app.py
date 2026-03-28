@@ -9,7 +9,7 @@ model = tf.keras.models.load_model('plant_disease_model.h5')
 with open('class_names.json') as f:
     class_names = json.load(f)
 
-# Disease info using exact class names from your model
+# Disease info
 disease_info = {
     "Pepper__bell___Bacterial_spot": {
         "description": "A bacterial disease causing dark, water-soaked spots on leaves and fruits.",
@@ -92,7 +92,10 @@ if uploaded_file is not None:
     predicted_class = class_names[np.argmax(prediction)]
     confidence = round(float(np.max(prediction)) * 100, 2)
 
-    st.success(f"🔍 Detected: **{predicted_class}**")
+    # Clean display name (remove underscores)
+    display_name = predicted_class.replace("_", " ").replace("  ", " ")
+
+    st.success(f"🔍 Detected: **{display_name}**")
     st.info(f"Confidence: **{confidence}%**")
 
     # Disease info
@@ -105,4 +108,4 @@ if uploaded_file is not None:
     else:
         st.write("---")
         st.subheader("📋 Disease Information")
-        st.write(f"**Detected class:** {predicted_class}")
+        st.write(f"**Detected:** {display_name}")
