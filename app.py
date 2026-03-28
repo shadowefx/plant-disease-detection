@@ -1,11 +1,11 @@
 import streamlit as st
+import tensorflow as tf
 import numpy as np
 from PIL import Image
 import json
-import tf_keras as keras
 
 # Load model and class names
-model = keras.models.load_model('plant_disease_model.h5')
+model = tf.keras.models.load_model('plant_disease_model.h5')
 
 with open('class_names.json') as f:
     class_names = json.load(f)
@@ -38,5 +38,5 @@ if uploaded_file is not None:
 
     # Show all predictions
     st.write("### All Predictions:")
-    for i, (name, prob) in enumerate(zip(class_names, prediction[0])):
+    for name, prob in zip(class_names, prediction[0]):
         st.progress(float(prob), text=f"{name}: {round(prob*100, 2)}%")
